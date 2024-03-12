@@ -17,5 +17,5 @@ sudo sed -i "s|server_name _;|$replacement|" /etc/nginx/sites-available/default
 # Test Nginx configuration
 sudo nginx -t
 
-# Restart Nginx to apply changes
+# Restart Nginx to apply the changes
 sudo service nginx restart
