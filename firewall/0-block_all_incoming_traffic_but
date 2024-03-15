@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
-# You go debug tire no evidence!
+# Install ufw firewall
+sudo apt install -y ufw
 
-sudo apt install ufw
+# Configure ufw firewall rules
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow 22/tcp
 sudo ufw allow 443/tcp
 sudo ufw allow 80/tcp
-sudo ufw enable
+
+# Enable ufw firewall
+sudo ufw --force enable
+
+# Check ufw status
 sudo ufw status verbose
