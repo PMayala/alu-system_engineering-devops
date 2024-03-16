@@ -41,8 +41,8 @@ frontend http_front
 
 backend http_back
     balance roundrobin
-    server 6012-web-01 $WEB_01_IP:80 check
-    server 6012-web-02 $WEB_02_IP:80 check
+    server web-01 $WEB_01_IP:80 check
+    server web-02 $WEB_02_IP:80 check
 EOF
 
 # Enable HAProxy service to start on boot
