@@ -1,26 +1,18 @@
 #!/usr/bin/env bash
-# Installs and setup haproxy
+# Script to install and configure HAProxy
 
-# Define variables
-STUDENT_ID="6012"
+# Define server IPs
 WEB_01_IP="54.83.87.119"
 WEB_02_IP="18.204.231.167"
-LB_IP="18.208.223.205"
-
-# Set correct hostnames for web servers
-sudo hostnamectl set-hostname $STUDENT_ID-web-01
-echo "$WEB_01_IP $STUDENT_ID-web-01" | sudo tee -a /etc/hosts > /dev/null
-sudo hostnamectl set-hostname $STUDENT_ID-web-02
-echo "$WEB_02_IP $STUDENT_ID-web-02" | sudo tee -a /etc/hosts > /dev/null
 
 # Install HAProxy
 sudo apt-get update
 sudo apt-get install -y haproxy
 
-# Configure HAProxy
+# Backup the default configuration file
 sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.backup
 
-# Edit the HAProxy configuration file
+# Configure HAProxy
 sudo tee /etc/haproxy/haproxy.cfg >/dev/null <<EOF
 global
     log /dev/log    local0
@@ -48,14 +40,11 @@ frontend http_front
 
 backend http_back
     balance roundrobin
-    server web-01 $STUDENT_ID-web-01:80 check
-    server web-02 $STUDENT_ID-web-02:80 check
+    server web-01 $WEB_01_IP:80 check
+    server web-02 $WEB_02_IP:80 check
 EOF
 
-# Enable HAProxy service to start on boot
-sudo systemctl enable haproxy
-
-# Restart HAProxy service
-sudo systemctl restart haproxy
+# Enable and restart HAProxy service
+sudo systemctl enable --now haproxy
 
 echo "HAProxy installation and configuration completed."
